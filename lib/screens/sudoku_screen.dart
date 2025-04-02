@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import '../providers/sudoku_provider.dart';
+import '../providers/theme_provider.dart';
 import '../widgets/number_input_pad.dart';
 import '../widgets/sudoku_grid.dart';
 import '../models/difficulty.dart';
@@ -78,6 +79,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<SudokuProvider>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -108,6 +110,18 @@ class _SudokuScreenState extends State<SudokuScreen> {
                     ),
                     Row(
                       children: [
+                        IconButton(
+                          icon: Icon(
+                            themeProvider.isDarkMode
+                                ? Icons.light_mode
+                                : Icons.dark_mode,
+                          ),
+                          onPressed: themeProvider.toggleTheme,
+                          tooltip:
+                              themeProvider.isDarkMode
+                                  ? "Switch to Light Mode"
+                                  : "Switch to Dark Mode",
+                        ),
                         IconButton(
                           icon: Icon(
                             _isPaused ? Icons.play_arrow : Icons.pause,
@@ -173,7 +187,10 @@ class _SudokuScreenState extends State<SudokuScreen> {
                         height: 2,
                         color: Theme.of(context).primaryColor,
                       ),
-                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
                       icon: Icon(
                         Icons.arrow_drop_down,
                         color: Theme.of(context).primaryColor,
@@ -188,7 +205,9 @@ class _SudokuScreenState extends State<SudokuScreen> {
                             color:
                                 provider.mistakes >= provider.maxMistakes
                                     ? Colors.red
-                                    : Colors.black,
+                                    : Theme.of(
+                                      context,
+                                    ).textTheme.bodyLarge?.color,
                             fontWeight:
                                 provider.mistakes > 0
                                     ? FontWeight.bold
@@ -196,11 +215,19 @@ class _SudokuScreenState extends State<SudokuScreen> {
                           ),
                         ),
                         SizedBox(width: 20),
-                        Icon(Icons.timer, size: 18),
+                        Icon(
+                          Icons.timer,
+                          size: 18,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
                         SizedBox(width: 4),
                         Text(
                           _formatDuration(_elapsedTime),
-                          style: TextStyle(fontSize: 16, letterSpacing: 1.2),
+                          style: TextStyle(
+                            fontSize: 16,
+                            letterSpacing: 1.2,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
+                          ),
                         ),
                       ],
                     ),
@@ -225,7 +252,10 @@ class _SudokuScreenState extends State<SudokuScreen> {
                       // Pause overlay
                       if (_isPaused)
                         Container(
-                          color: Colors.black,
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.black.withOpacity(0.9)
+                                  : Colors.black,
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -267,7 +297,10 @@ class _SudokuScreenState extends State<SudokuScreen> {
                           !provider.isComplete &&
                           provider.mistakes >= provider.maxMistakes)
                         Container(
-                          color: Colors.red.withOpacity(0.9),
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.red.shade900.withOpacity(0.85)
+                                  : Colors.red.withOpacity(0.9),
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -305,7 +338,11 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
-                                    foregroundColor: Colors.red.shade800,
+                                    foregroundColor:
+                                        Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.red.shade900
+                                            : Colors.red.shade800,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 24,
                                       vertical: 12,
@@ -320,7 +357,10 @@ class _SudokuScreenState extends State<SudokuScreen> {
                       // Puzzle Solved overlay
                       if (!_isPaused && provider.isComplete)
                         Container(
-                          color: Colors.green.withOpacity(0.9),
+                          color:
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.green.shade900.withOpacity(0.85)
+                                  : Colors.green.withOpacity(0.9),
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -366,7 +406,11 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
-                                    foregroundColor: Colors.green.shade800,
+                                    foregroundColor:
+                                        Theme.of(context).brightness ==
+                                                Brightness.dark
+                                            ? Colors.green.shade900
+                                            : Colors.green.shade800,
                                     padding: EdgeInsets.symmetric(
                                       horizontal: 24,
                                       vertical: 12,
