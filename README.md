@@ -61,3 +61,6 @@ A functional Sudoku game application built with Flutter, featuring responsive de
 3.  Navigate to the project directory.
 4.  Run `flutter pub get` to install dependencies.
 5.  Run `flutter run` to launch the application on a connected device or emulator.
+
+## Try the deployed web version on github.io
+https://pranjal-baishya.github.io/sudoku/
