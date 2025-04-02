@@ -3,17 +3,20 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
       - run: flutter pub get
-      - run: flutter build web
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - run: flutter build web --base-href /sudoku/ --release
+      - uses: JamesIves/github-pages-deploy-action@v4
         with:
-          personal_token: ${{ secrets.DEPLOY_TOKEN }}
-          publish_dir: ./build/web
+          folder: build/web
+          branch: gh-pages
