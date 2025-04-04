@@ -31,7 +31,7 @@ void main() {
     SystemUiMode.immersiveSticky,
     overlays: [],
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -55,15 +55,15 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             initialRoute: '/',
             routes: {
-              '/': (context) => SplashScreen(),
-              '/privacy': (context) => PrivacyPolicyScreen(),
+              '/': (context) => const SplashScreen(),
+              '/privacy': (context) => const PrivacyPolicyScreen(),
             },
             onGenerateRoute: (settings) {
               if (settings.name == '/home') {
                 return PageRouteBuilder(
                   settings: settings,
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      SudokuScreen(),
+                      const SudokuScreen(),
                   transitionsBuilder: (
                     context,
                     animation,
@@ -80,12 +80,12 @@ class MyApp extends StatelessWidget {
                       child: child,
                     );
                   },
-                  transitionDuration: Duration(milliseconds: 500),
+                  transitionDuration: const Duration(milliseconds: 500),
                 );
               }
               if (settings.name == '/privacy') {
                 return MaterialPageRoute(
-                  builder: (context) => PrivacyPolicyScreen(),
+                  builder: (context) => const PrivacyPolicyScreen(),
                   settings: settings,
                 );
               }

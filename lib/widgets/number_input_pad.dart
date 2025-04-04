@@ -20,8 +20,8 @@ class NumberInputPad extends StatelessWidget {
         height: 120,
         child: GridView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 9,
             childAspectRatio: 1.0,
             crossAxisSpacing: 4,
@@ -37,26 +37,24 @@ class NumberInputPad extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(4),
                 ),
-                backgroundColor:
-                    isDarkMode
-                        ? Colors.grey.shade800
-                        : Theme.of(context).primaryColor,
+                backgroundColor: isDarkMode
+                    ? Colors.grey.shade800
+                    : Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
-                disabledBackgroundColor:
-                    isDarkMode
-                        ? Colors.grey.shade900.withOpacity(0.3)
-                        : Colors.grey.shade300,
+                disabledBackgroundColor: isDarkMode
+                    ? Colors.grey.shade900.withOpacity(0.3)
+                    : Colors.grey.shade300,
                 disabledForegroundColor:
                     isDarkMode ? Colors.grey.shade600 : Colors.grey.shade700,
                 elevation: isDarkMode ? 4 : 2,
-                shadowColor:
-                    isDarkMode
-                        ? Colors.black.withOpacity(0.5)
-                        : Colors.black.withOpacity(0.3),
+                shadowColor: isDarkMode
+                    ? Colors.black.withOpacity(0.5)
+                    : Colors.black.withOpacity(0.3),
               ),
               child: Text(
                 '$number',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             );
           },

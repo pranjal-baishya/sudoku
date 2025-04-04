@@ -1,5 +1,5 @@
 name: sudoku
-description: "A new Flutter project."
+description: "A modern, feature-rich Sudoku game with multiple difficulty levels, dark mode, and intuitive controls. Challenge yourself with daily puzzles, track your progress, and enjoy a clean, distraction-free gaming experience."
 publish_to: 'none'
 version: 1.0.0+1
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -18,28 +20,28 @@ class _SplashScreenState extends State<SplashScreen>
 
     // Set up animations
     _controller = AnimationController(
-      duration: Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
 
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.65, curve: Curves.easeInOut),
+        curve: const Interval(0.0, 0.65, curve: Curves.easeInOut),
       ),
     );
 
     _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: Interval(0.0, 0.65, curve: Curves.easeInOut),
+        curve: const Interval(0.0, 0.65, curve: Curves.easeInOut),
       ),
     );
 
     // Start animation and navigate after delay
     _controller.forward();
 
-    Timer(Duration(milliseconds: 2500), () {
+    Timer(const Duration(milliseconds: 2500), () {
       Navigator.of(context).pushReplacementNamed('/home');
     });
   }
@@ -70,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen>
                       width: 150,
                       height: 150,
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Text(
                       'Sudoku',
                       style: TextStyle(
@@ -79,8 +81,8 @@ class _SplashScreenState extends State<SplashScreen>
                         color: Colors.blue[800],
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Developed by Pranjal Baishya',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),

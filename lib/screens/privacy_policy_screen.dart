@@ -7,7 +7,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Privacy Policy'), elevation: 1),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,8 +50,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 16.0, top: 8.0),
               child: Text(
-                '• Your current game progress (puzzle state, selected cells, notes)\n' +
-                    '• Game settings (such as difficulty level, timer state, theme preference)\n' +
+                '• Your current game progress (puzzle state, selected cells, notes)\n'
+                        '• Game settings (such as difficulty level, timer state, theme preference)\n' +
                     '• Statistics like mistakes made or hints used.',
               ),
             ),

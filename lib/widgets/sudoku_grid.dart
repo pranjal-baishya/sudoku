@@ -14,7 +14,7 @@ class SudokuGrid extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(4.0),
       child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 9,
           childAspectRatio: 1,
         ),
@@ -32,8 +32,8 @@ class SudokuGrid extends StatelessWidget {
           bool isSameNumber = false;
           int? selectedValue =
               (provider.selectedRow != null && provider.selectedCol != null)
-                  ? provider.currentBoard[provider.selectedRow!][provider
-                      .selectedCol!]
+                  ? provider.currentBoard[provider.selectedRow!]
+                      [provider.selectedCol!]
                   : 0;
           if (selectedValue != 0 &&
               provider.currentBoard[row][col] == selectedValue) {
@@ -94,10 +94,9 @@ class SudokuGrid extends StatelessWidget {
               textColor = Colors.black;
             } else {
               cellBackground = Colors.white;
-              textColor =
-                  isSameNumber && !isSelected
-                      ? Colors.blue.shade700
-                      : Colors.blue.shade900;
+              textColor = isSameNumber && !isSelected
+                  ? Colors.blue.shade700
+                  : Colors.blue.shade900;
             }
           }
 
@@ -106,7 +105,7 @@ class SudokuGrid extends StatelessWidget {
               provider.selectCell(row, col);
             },
             child: Container(
-              margin: EdgeInsets.all(0.5),
+              margin: const EdgeInsets.all(0.5),
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
@@ -129,17 +128,16 @@ class SudokuGrid extends StatelessWidget {
                 color: cellBackground,
               ),
               child: Center(
-                child:
-                    cellValue != 0
-                        ? Text(
-                          cellValue.toString(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: textColor,
-                          ),
-                        )
-                        : hasNotes
+                child: cellValue != 0
+                    ? Text(
+                        cellValue.toString(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
+                        ),
+                      )
+                    : hasNotes
                         ? _buildNotesWidget(notes, context)
                         : Container(),
               ),
