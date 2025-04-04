@@ -5,10 +5,10 @@ class NumberInputPad extends StatelessWidget {
   final bool isDisabled;
 
   const NumberInputPad({
-    Key? key,
+    super.key,
     required this.onNumberSelected,
     this.isDisabled = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,6 +8,8 @@ import '../widgets/sudoku_grid.dart';
 import '../models/difficulty.dart';
 
 class SudokuScreen extends StatefulWidget {
+  const SudokuScreen({super.key});
+
   @override
   _SudokuScreenState createState() => _SudokuScreenState();
 }
@@ -84,7 +86,9 @@ class _SudokuScreenState extends State<SudokuScreen> {
     return Scaffold(
       appBar: AppBar(
         title: null,
-        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        toolbarHeight: 10,
         automaticallyImplyLeading: false,
       ),
       body: Center(
@@ -92,7 +96,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
           constraints: BoxConstraints(maxWidth: 700),
           child: Column(
             children: [
-              // Custom app bar content
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 12.0,
@@ -129,25 +132,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
                           onPressed: _togglePause,
                           tooltip: _isPaused ? "Resume" : "Pause",
                         ),
-                        if (provider.isComplete)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(
-                              Icons.check_circle,
-                              color: Colors.green,
-                              size: 30,
-                            ),
-                          ),
-                        if (!provider.isComplete &&
-                            provider.mistakes >= provider.maxMistakes)
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Icon(
-                              Icons.cancel,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                          ),
                       ],
                     ),
                   ],
@@ -156,7 +140,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
 
               Divider(height: 1),
 
-              // Difficulty, mistakes and timer row
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 4.0,
@@ -235,295 +218,290 @@ class _SudokuScreenState extends State<SudokuScreen> {
                 ),
               ),
 
-              // Sudoku board with overlays
               Expanded(
-                flex: 7,
-                child: AspectRatio(
-                  aspectRatio: 1.0,
-                  child: Stack(
-                    children: [
-                      // Sudoku grid (only visible when not paused)
-                      Visibility(
-                        visible: !_isPaused,
-                        maintainState: true,
-                        child: SudokuGrid(provider: provider),
-                      ),
-
-                      // Pause overlay
-                      if (_isPaused)
-                        Container(
-                          color:
-                              Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.black.withOpacity(0.9)
-                                  : Colors.black,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.pause_circle_outline,
-                                  color: Colors.white,
-                                  size: 70,
-                                ),
-                                SizedBox(height: 24),
-                                Text(
-                                  "GAME PAUSED",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5,
-                                  ),
-                                ),
-                                SizedBox(height: 16),
-                                ElevatedButton.icon(
-                                  icon: Icon(Icons.play_arrow),
-                                  label: Text("RESUME GAME"),
-                                  onPressed: _togglePause,
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 24,
-                                      vertical: 12,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                child: Center(
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: Stack(
+                      children: [
+                        Visibility(
+                          visible: !_isPaused,
+                          maintainState: true,
+                          child: SudokuGrid(provider: provider),
                         ),
 
-                      // Game Over overlay
-                      if (!_isPaused &&
-                          !provider.isComplete &&
-                          provider.mistakes >= provider.maxMistakes)
-                        Container(
-                          color:
-                              Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.red.shade900.withOpacity(0.85)
-                                  : Colors.red.withOpacity(0.9),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  color: Colors.white,
-                                  size: 70,
-                                ),
-                                SizedBox(height: 24),
-                                Text(
-                                  "GAME OVER",
-                                  style: TextStyle(
+                        if (_isPaused)
+                          Container(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.black.withOpacity(0.9)
+                                    : Colors.black,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.pause_circle_outline,
                                     color: Colors.white,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5,
+                                    size: 70,
                                   ),
-                                ),
-                                SizedBox(height: 16),
-                                Text(
-                                  "Too many mistakes!",
-                                  style: TextStyle(
-                                    color: Colors.white.withOpacity(0.8),
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                SizedBox(height: 24),
-                                ElevatedButton.icon(
-                                  icon: Icon(Icons.refresh),
-                                  label: Text("NEW GAME"),
-                                  onPressed: () {
-                                    provider.generateNewSudoku();
-                                    _resetAndStartTimer();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor:
-                                        Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.red.shade900
-                                            : Colors.red.shade800,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 24,
-                                      vertical: 12,
+                                  SizedBox(height: 24),
+                                  Text(
+                                    "GAME PAUSED",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: 16),
+                                  ElevatedButton.icon(
+                                    icon: Icon(Icons.play_arrow),
+                                    label: Text("RESUME GAME"),
+                                    onPressed: _togglePause,
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 24,
+                                        vertical: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
 
-                      // Puzzle Solved overlay
-                      if (!_isPaused && provider.isComplete)
-                        Container(
-                          color:
-                              Theme.of(context).brightness == Brightness.dark
-                                  ? Colors.green.shade900.withOpacity(0.85)
-                                  : Colors.green.withOpacity(0.9),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.emoji_events,
-                                  color: Colors.white,
-                                  size: 70,
-                                ),
-                                SizedBox(height: 24),
-                                Text(
-                                  "PUZZLE SOLVED!",
-                                  style: TextStyle(
+                        if (!_isPaused &&
+                            !provider.isComplete &&
+                            provider.mistakes >= provider.maxMistakes)
+                          Container(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.red.shade900.withOpacity(0.85)
+                                    : Colors.red.withOpacity(0.9),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.error_outline,
                                     color: Colors.white,
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
-                                    letterSpacing: 1.5,
+                                    size: 70,
                                   ),
-                                ),
-                                Text(
-                                  "Difficulty: ${provider.currentDifficulty.name}",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 16),
-                                Text(
-                                  "Time: ${_formatDuration(_elapsedTime)}",
-                                  style: TextStyle(
-                                    color: Colors.white.withOpacity(0.8),
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                SizedBox(height: 24),
-                                ElevatedButton.icon(
-                                  icon: Icon(Icons.refresh),
-                                  label: Text("NEW GAME"),
-                                  onPressed: () {
-                                    provider.generateNewSudoku();
-                                    _resetAndStartTimer();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor:
-                                        Theme.of(context).brightness ==
-                                                Brightness.dark
-                                            ? Colors.green.shade900
-                                            : Colors.green.shade800,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 24,
-                                      vertical: 12,
+                                  SizedBox(height: 24),
+                                  Text(
+                                    "GAME OVER",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: 16),
+                                  Text(
+                                    "Too many mistakes!",
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.8),
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 24),
+                                  ElevatedButton.icon(
+                                    icon: Icon(Icons.refresh),
+                                    label: Text("NEW GAME"),
+                                    onPressed: () {
+                                      provider.generateNewSudoku();
+                                      _resetAndStartTimer();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      foregroundColor:
+                                          Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.red.shade900
+                                              : Colors.red.shade800,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 24,
+                                        vertical: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                    ],
+
+                        if (!_isPaused && provider.isComplete)
+                          Container(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.green.shade900.withOpacity(0.85)
+                                    : Colors.green.withOpacity(0.9),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.emoji_events,
+                                    color: Colors.white,
+                                    size: 70,
+                                  ),
+                                  SizedBox(height: 24),
+                                  Text(
+                                    "PUZZLE SOLVED!",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Difficulty: ${provider.currentDifficulty.name}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  Text(
+                                    "Time: ${_formatDuration(_elapsedTime)}",
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.8),
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  SizedBox(height: 24),
+                                  ElevatedButton.icon(
+                                    icon: Icon(Icons.refresh),
+                                    label: Text("NEW GAME"),
+                                    onPressed: () {
+                                      provider.generateNewSudoku();
+                                      _resetAndStartTimer();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      foregroundColor:
+                                          Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.green.shade900
+                                              : Colors.green.shade800,
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 24,
+                                        vertical: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
 
-              // Control buttons row
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0,
-                    vertical: 4.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.undo),
-                        onPressed: _isPaused ? null : provider.undoLastMove,
-                        tooltip: "Undo",
-                        iconSize: 24,
-                        color:
-                            _isPaused
-                                ? Colors.grey
-                                : provider.moveHistory.isNotEmpty
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 4.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.undo),
+                      onPressed: _isPaused ? null : provider.undoLastMove,
+                      tooltip: "Undo",
+                      iconSize: 24,
+                      color:
+                          _isPaused
+                              ? Colors.grey
+                              : provider.moveHistory.isNotEmpty
+                              ? Theme.of(context).primaryColor
+                              : Colors.grey,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.edit_off),
+                      onPressed: _isPaused ? null : provider.eraseCell,
+                      tooltip: "Erase",
+                      iconSize: 24,
+                      color: _isPaused ? Colors.grey : null,
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        provider.isNotesMode ? Icons.edit_note : Icons.edit,
                       ),
-                      IconButton(
-                        icon: Icon(Icons.edit_off),
-                        onPressed: _isPaused ? null : provider.eraseCell,
-                        tooltip: "Erase",
-                        iconSize: 24,
-                        color: _isPaused ? Colors.grey : null,
+                      onPressed: _isPaused ? null : provider.toggleNotesMode,
+                      tooltip: "Notes (${provider.isNotesMode ? 'On' : 'Off'})",
+                      iconSize: 24,
+                      color:
+                          _isPaused
+                              ? Colors.grey
+                              : provider.isNotesMode
+                              ? Theme.of(context).colorScheme.secondary
+                              : null,
+                    ),
+                    Badge(
+                      label: Text(
+                        '${provider.maxHints - provider.hintsUsed}',
+                        style: TextStyle(fontSize: 10),
                       ),
-                      IconButton(
-                        icon: Icon(
-                          provider.isNotesMode ? Icons.edit_note : Icons.edit,
-                        ),
-                        onPressed: _isPaused ? null : provider.toggleNotesMode,
+                      isLabelVisible:
+                          provider.hintsUsed < provider.maxHints &&
+                          !provider.isComplete &&
+                          !_isPaused,
+                      child: IconButton(
+                        icon: Icon(Icons.lightbulb_outline),
+                        onPressed: _isPaused ? null : provider.useHint,
                         tooltip:
-                            "Notes (${provider.isNotesMode ? 'On' : 'Off'})",
+                            "Hint (${provider.maxHints - provider.hintsUsed} left)",
                         iconSize: 24,
                         color:
-                            _isPaused
+                            _isPaused ||
+                                    provider.hintsUsed >= provider.maxHints ||
+                                    provider.isComplete
                                 ? Colors.grey
-                                : provider.isNotesMode
-                                ? Theme.of(context).colorScheme.secondary
                                 : null,
                       ),
-                      Badge(
-                        label: Text(
-                          '${provider.maxHints - provider.hintsUsed}',
-                          style: TextStyle(fontSize: 10),
-                        ),
-                        isLabelVisible:
-                            provider.hintsUsed < provider.maxHints &&
-                            !provider.isComplete &&
-                            !_isPaused,
-                        child: IconButton(
-                          icon: Icon(Icons.lightbulb_outline),
-                          onPressed: _isPaused ? null : provider.useHint,
-                          tooltip:
-                              "Hint (${provider.maxHints - provider.hintsUsed} left)",
-                          iconSize: 24,
-                          color:
-                              _isPaused ||
-                                      provider.hintsUsed >= provider.maxHints ||
-                                      provider.isComplete
-                                  ? Colors.grey
-                                  : null,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
 
-              // Number pad
-              Expanded(
-                flex: 1,
-                child: NumberInputPad(
-                  isDisabled: _isPaused,
-                  onNumberSelected: (number) {
-                    if (_isPaused) return;
+              NumberInputPad(
+                isDisabled: _isPaused,
+                onNumberSelected: (number) {
+                  if (_isPaused) return;
 
-                    if (provider.selectedRow != null &&
-                        provider.selectedCol != null) {
-                      if (provider.isNotesMode) {
-                        provider.updateNote(
-                          provider.selectedRow!,
-                          provider.selectedCol!,
-                          number,
-                        );
-                      } else {
-                        provider.updateCell(
-                          provider.selectedRow!,
-                          provider.selectedCol!,
-                          number,
-                        );
-                      }
+                  if (provider.selectedRow != null &&
+                      provider.selectedCol != null) {
+                    if (provider.isNotesMode) {
+                      provider.updateNote(
+                        provider.selectedRow!,
+                        provider.selectedCol!,
+                        number,
+                      );
+                    } else {
+                      provider.updateCell(
+                        provider.selectedRow!,
+                        provider.selectedCol!,
+                        number,
+                      );
                     }
-                  },
+                  }
+                },
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                child: Text(
+                  'Developed by Pranjal Baishya',
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ),
             ],

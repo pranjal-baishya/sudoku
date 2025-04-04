@@ -4,7 +4,7 @@ import '../providers/sudoku_provider.dart';
 class SudokuGrid extends StatelessWidget {
   final SudokuProvider provider;
 
-  const SudokuGrid({Key? key, required this.provider}) : super(key: key);
+  const SudokuGrid({super.key, required this.provider});
 
   @override
   Widget build(BuildContext context) {
