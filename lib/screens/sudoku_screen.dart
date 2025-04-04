@@ -6,6 +6,7 @@ import '../providers/theme_provider.dart';
 import '../widgets/number_input_pad.dart';
 import '../widgets/sudoku_grid.dart';
 import '../models/difficulty.dart';
+import '../screens/settings_screen.dart';
 
 class SudokuScreen extends StatefulWidget {
   const SudokuScreen({super.key});
@@ -33,14 +34,14 @@ class _SudokuScreenState extends State<SudokuScreen> {
 
   void _startTimer() {
     _timer?.cancel();
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final provider = Provider.of<SudokuProvider>(context, listen: false);
       if (mounted &&
           !provider.isComplete &&
           provider.mistakes < provider.maxMistakes &&
           !_isPaused) {
         setState(() {
-          _elapsedTime = _elapsedTime + Duration(seconds: 1);
+          _elapsedTime = _elapsedTime + const Duration(seconds: 1);
         });
       } else if (provider.isComplete ||
           provider.mistakes >= provider.maxMistakes) {
@@ -87,13 +88,24 @@ class _SudokuScreenState extends State<SudokuScreen> {
       appBar: AppBar(
         title: null,
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        toolbarHeight: 10,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingsScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 700),
+          constraints: const BoxConstraints(maxWidth: 700),
           child: Column(
             children: [
               Padding(
@@ -104,7 +116,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Sudoku Game",
                       style: TextStyle(
                         fontSize: 22,
@@ -120,10 +132,9 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                 : Icons.dark_mode,
                           ),
                           onPressed: themeProvider.toggleTheme,
-                          tooltip:
-                              themeProvider.isDarkMode
-                                  ? "Switch to Light Mode"
-                                  : "Switch to Dark Mode",
+                          tooltip: themeProvider.isDarkMode
+                              ? "Switch to Light Mode"
+                              : "Switch to Dark Mode",
                         ),
                         IconButton(
                           icon: Icon(
@@ -138,7 +149,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                 ),
               ),
 
-              Divider(height: 1),
+              const Divider(height: 1),
 
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -150,16 +161,15 @@ class _SudokuScreenState extends State<SudokuScreen> {
                   children: [
                     DropdownButton<Difficulty>(
                       value: provider.currentDifficulty,
-                      items:
-                          Difficulty.values.map((Difficulty difficulty) {
-                            return DropdownMenuItem<Difficulty>(
-                              value: difficulty,
-                              child: Text(
-                                difficulty.name[0].toUpperCase() +
-                                    difficulty.name.substring(1),
-                              ),
-                            );
-                          }).toList(),
+                      items: Difficulty.values.map((Difficulty difficulty) {
+                        return DropdownMenuItem<Difficulty>(
+                          value: difficulty,
+                          child: Text(
+                            difficulty.name[0].toUpperCase() +
+                                difficulty.name.substring(1),
+                          ),
+                        );
+                      }).toList(),
                       onChanged: (Difficulty? newValue) {
                         if (newValue != null) {
                           provider.changeDifficulty(newValue);
@@ -185,25 +195,23 @@ class _SudokuScreenState extends State<SudokuScreen> {
                           "Mistakes: ${provider.mistakes}/${provider.maxMistakes}",
                           style: TextStyle(
                             fontSize: 16,
-                            color:
-                                provider.mistakes >= provider.maxMistakes
-                                    ? Colors.red
-                                    : Theme.of(
-                                      context,
-                                    ).textTheme.bodyLarge?.color,
-                            fontWeight:
-                                provider.mistakes > 0
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
+                            color: provider.mistakes >= provider.maxMistakes
+                                ? Colors.red
+                                : Theme.of(
+                                    context,
+                                  ).textTheme.bodyLarge?.color,
+                            fontWeight: provider.mistakes > 0
+                                ? FontWeight.bold
+                                : FontWeight.normal,
                           ),
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Icon(
                           Icons.timer,
                           size: 18,
                           color: Theme.of(context).iconTheme.color,
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
                           _formatDuration(_elapsedTime),
                           style: TextStyle(
@@ -229,7 +237,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
                           maintainState: true,
                           child: SudokuGrid(provider: provider),
                         ),
-
                         if (_isPaused)
                           Container(
                             color:
@@ -240,13 +247,13 @@ class _SudokuScreenState extends State<SudokuScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.pause_circle_outline,
                                     color: Colors.white,
                                     size: 70,
                                   ),
-                                  SizedBox(height: 24),
-                                  Text(
+                                  const SizedBox(height: 24),
+                                  const Text(
                                     "GAME PAUSED",
                                     style: TextStyle(
                                       color: Colors.white,
@@ -255,13 +262,13 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                       letterSpacing: 1.5,
                                     ),
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
                                   ElevatedButton.icon(
-                                    icon: Icon(Icons.play_arrow),
-                                    label: Text("RESUME GAME"),
+                                    icon: const Icon(Icons.play_arrow),
+                                    label: const Text("RESUME GAME"),
                                     onPressed: _togglePause,
                                     style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                         horizontal: 24,
                                         vertical: 12,
                                       ),
@@ -271,7 +278,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
                               ),
                             ),
                           ),
-
                         if (!_isPaused &&
                             !provider.isComplete &&
                             provider.mistakes >= provider.maxMistakes)
@@ -284,13 +290,13 @@ class _SudokuScreenState extends State<SudokuScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.error_outline,
                                     color: Colors.white,
                                     size: 70,
                                   ),
-                                  SizedBox(height: 24),
-                                  Text(
+                                  const SizedBox(height: 24),
+                                  const Text(
                                     "GAME OVER",
                                     style: TextStyle(
                                       color: Colors.white,
@@ -299,7 +305,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                       letterSpacing: 1.5,
                                     ),
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
                                   Text(
                                     "Too many mistakes!",
                                     style: TextStyle(
@@ -307,10 +313,10 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                       fontSize: 18,
                                     ),
                                   ),
-                                  SizedBox(height: 24),
+                                  const SizedBox(height: 24),
                                   ElevatedButton.icon(
-                                    icon: Icon(Icons.refresh),
-                                    label: Text("NEW GAME"),
+                                    icon: const Icon(Icons.refresh),
+                                    label: const Text("NEW GAME"),
                                     onPressed: () {
                                       provider.generateNewSudoku();
                                       _resetAndStartTimer();
@@ -322,7 +328,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                                   Brightness.dark
                                               ? Colors.red.shade900
                                               : Colors.red.shade800,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                         horizontal: 24,
                                         vertical: 12,
                                       ),
@@ -332,7 +338,6 @@ class _SudokuScreenState extends State<SudokuScreen> {
                               ),
                             ),
                           ),
-
                         if (!_isPaused && provider.isComplete)
                           Container(
                             color:
@@ -343,13 +348,13 @@ class _SudokuScreenState extends State<SudokuScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.emoji_events,
                                     color: Colors.white,
                                     size: 70,
                                   ),
-                                  SizedBox(height: 24),
-                                  Text(
+                                  const SizedBox(height: 24),
+                                  const Text(
                                     "PUZZLE SOLVED!",
                                     style: TextStyle(
                                       color: Colors.white,
@@ -360,13 +365,13 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                   ),
                                   Text(
                                     "Difficulty: ${provider.currentDifficulty.name}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
                                   Text(
                                     "Time: ${_formatDuration(_elapsedTime)}",
                                     style: TextStyle(
@@ -374,10 +379,10 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                       fontSize: 18,
                                     ),
                                   ),
-                                  SizedBox(height: 24),
+                                  const SizedBox(height: 24),
                                   ElevatedButton.icon(
-                                    icon: Icon(Icons.refresh),
-                                    label: Text("NEW GAME"),
+                                    icon: const Icon(Icons.refresh),
+                                    label: const Text("NEW GAME"),
                                     onPressed: () {
                                       provider.generateNewSudoku();
                                       _resetAndStartTimer();
@@ -389,7 +394,7 @@ class _SudokuScreenState extends State<SudokuScreen> {
                                                   Brightness.dark
                                               ? Colors.green.shade900
                                               : Colors.green.shade800,
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                         horizontal: 24,
                                         vertical: 12,
                                       ),
@@ -414,19 +419,18 @@ class _SudokuScreenState extends State<SudokuScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.undo),
+                      icon: const Icon(Icons.undo),
                       onPressed: _isPaused ? null : provider.undoLastMove,
                       tooltip: "Undo",
                       iconSize: 24,
-                      color:
-                          _isPaused
-                              ? Colors.grey
-                              : provider.moveHistory.isNotEmpty
+                      color: _isPaused
+                          ? Colors.grey
+                          : provider.moveHistory.isNotEmpty
                               ? Theme.of(context).primaryColor
                               : Colors.grey,
                     ),
                     IconButton(
-                      icon: Icon(Icons.edit_off),
+                      icon: const Icon(Icons.edit_off),
                       onPressed: _isPaused ? null : provider.eraseCell,
                       tooltip: "Erase",
                       iconSize: 24,
@@ -439,34 +443,31 @@ class _SudokuScreenState extends State<SudokuScreen> {
                       onPressed: _isPaused ? null : provider.toggleNotesMode,
                       tooltip: "Notes (${provider.isNotesMode ? 'On' : 'Off'})",
                       iconSize: 24,
-                      color:
-                          _isPaused
-                              ? Colors.grey
-                              : provider.isNotesMode
+                      color: _isPaused
+                          ? Colors.grey
+                          : provider.isNotesMode
                               ? Theme.of(context).colorScheme.secondary
                               : null,
                     ),
                     Badge(
                       label: Text(
                         '${provider.maxHints - provider.hintsUsed}',
-                        style: TextStyle(fontSize: 10),
+                        style: const TextStyle(fontSize: 10),
                       ),
-                      isLabelVisible:
-                          provider.hintsUsed < provider.maxHints &&
+                      isLabelVisible: provider.hintsUsed < provider.maxHints &&
                           !provider.isComplete &&
                           !_isPaused,
                       child: IconButton(
-                        icon: Icon(Icons.lightbulb_outline),
+                        icon: const Icon(Icons.lightbulb_outline),
                         onPressed: _isPaused ? null : provider.useHint,
                         tooltip:
                             "Hint (${provider.maxHints - provider.hintsUsed} left)",
                         iconSize: 24,
-                        color:
-                            _isPaused ||
-                                    provider.hintsUsed >= provider.maxHints ||
-                                    provider.isComplete
-                                ? Colors.grey
-                                : null,
+                        color: _isPaused ||
+                                provider.hintsUsed >= provider.maxHints ||
+                                provider.isComplete
+                            ? Colors.grey
+                            : null,
                       ),
                     ),
                   ],
@@ -497,11 +498,27 @@ class _SudokuScreenState extends State<SudokuScreen> {
                 },
               ),
 
+              // Developer credit and Privacy Policy
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                child: Text(
-                  'Developed by Pranjal Baishya',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                padding: const EdgeInsets.only(top: 8.0, bottom: 12.0),
+                child: Column(
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Developed by Pranjal Baishya',
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '© All rights reserved 2025',
+                      style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                    ),
+                  ],
                 ),
               ),
             ],
